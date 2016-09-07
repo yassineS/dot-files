@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/ys/.oh-my-zsh
 
+# Add iTerm2 integration
+# source ~/.iterm2_shell_integration.`basename $SHELL`
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -54,9 +57,12 @@ HIST_STAMPS="dd/mm/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(cp tmux rsync tmuxinator z command-not-found colored-man-pages colorize git python extract aws brew catimg chucknorris cloudapp common-aliases docker fabric git-extras gitfast history sudo pip virtualenv virtualenvwrapper)
 
+plugins+=(zsh-completions)
+autoload -U compinit && compinit
+
 # User configuration
 
-export PATH="/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/Library/TeX/texbin:/Users/ys/Library/Enthought/Canopy_64bit/User/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/texbin:/Applications/plink:/Users/ys/bin/gsl-1.16:/Users/ys/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Users/ys/Library/Enthought/Canopy_64bit/User/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/texbin:/Applications/plink:/Users/ys/bin/gsl-1.16:/Users/ys/bin:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin.v2:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin.v2i:/Users/ys/bin/simlinks:/Users/ys/bin/go/bin"
+export PATH="/Users/ys/bin/github/depot_tools:/opt/local/bin:/opt/local/sbin:/sw/bin:/sw/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/Library/TeX/texbin:/Users/ys/Library/Enthought/Canopy_64bit/User/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/texbin:/Applications/plink:/Users/ys/bin/gsl-1.16:/Users/ys/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Users/ys/Library/Enthought/Canopy_64bit/User/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/texbin:/Applications/plink:/Users/ys/bin/gsl-1.16:/Users/ys/bin:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin.v2:/Users/ys/bin/boost_1_59_0:/Users/ys/bin/boost_1_59_0/bin.v2i:/Users/ys/bin/simlinks:/Users/ys/bin/go/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -90,11 +96,14 @@ export LANG=en_US.UTF-8
 export CC=/usr/local/bin/gcc-4.2
 
 # Add github ssh key
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/github
+eval "$(ssh-agent -s)" >& /dev/null
+ssh-add ~/.ssh/github >& /dev/null
 
 # Autocomplete for aws-cli
-complete -C aws_completer aws
+#complete -C aws_completer aws
+source /usr/local/share/zsh/site-functions/_aws
+source /usr/local/share/zsh/site-functions/_docker
+source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 # Load z: jumping around directories
 source /Users/ys/bin/github/z/z.sh
@@ -151,5 +160,17 @@ tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | s
 
 export EDITOR="vim"
 
+source /usr/local/share/zsh/site-functions/_aws
+
+# Print screenfetch: logo and sysinfor
+screenfetch
+
 # Print quote in cowthink: chuck norris random quotes
 chuck_cow
+
+
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Defining the LS_COLORS variable directories: blue, executable: green and simlinks cyan
+LS_COLORS=$LS_COLORS:'di=1;34:ex=0;32:ln=0;36:' ; export LS_COLORS
+ZLS_COLORS=$ZLS_COLORS:'di=1;34:ex=0;32:ln=0;36:' ; export ZLS_COLORS
